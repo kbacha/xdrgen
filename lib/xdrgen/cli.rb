@@ -5,7 +5,7 @@ module Xdrgen
     def self.run(args)
       args = args.dup
       opts = Slop.parse! args do
-        banner 'Usage: xdrgen -o OUTPUT_DIR INPUT --gen=ruby'
+        banner 'Usage: xdrgen -l ruby -o OUTPUT_DIR INPUT'
         on 'o', 'output=', 'The output directory'
         on 'l', 'language=', 'The output language', default: 'ruby'
         on 'n', 'namespace=', '"namespace" to generate code within (language-specific)'
