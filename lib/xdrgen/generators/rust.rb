@@ -57,6 +57,11 @@ module Xdrgen
       def render_enum(out, enum)
         out.puts '#[derive(Debug, Deserialize, Serialize, Clone, PartialEq)]'
         out.puts "enum #{enum.name.camelize} {"
+        out.indent do
+          enum.members.each do |m|
+            out.puts m.name.camelize
+          end
+        end
         out.puts '}'
         out.break
       end
