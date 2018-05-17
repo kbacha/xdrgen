@@ -1,14 +1,38 @@
 module Xdrgen
   module Generators
     class Rust < Xdrgen::Generators::Base
+      extend ActiveSupport::Autoload
+
+      Renderable = Types::Any.constrained(attr: :render)
+
+      autoload :ClikeEnum
+      autoload :Comment
+      autoload :Mod
+
       def generate
         out = @output.open("#{@namespace || 'rust_generated'}.rs")
         render_top_matter(out)
-        render_definitions_index(out, @top)
-        render_bottom_matter(out)
+        map_to_rust(@top).each { |r| r.render(out) }
       end
 
       private
+
+      def map_to_rust(node)
+        node.definitions.map do |member|
+          case member
+          when AST::Definitions::Namespace then rust_from_namespace(member)
+            # when AST::Definitions::Typedef
+            # when AST::Definitions::Const
+            # when AST::Definitions::Struct
+            # when AST::Definitions::Enum
+            # when AST::Definitions::Union
+          end
+        end.compact
+      end
+
+      def rust_from_namespace(namespace)
+        Mod[identifier: namespace.name, inners: map_to_rust(namespace)]
+      end
 
       def render_definitions_index(out, node)
         node.definitions.each do |member|
@@ -59,7 +83,7 @@ module Xdrgen
         out.puts "enum #{enum.name.camelize} {"
         out.indent do
           enum.members.each do |m|
-            out.puts m.name.camelize
+            out.puts "#{m.name.underscore.camelize} = #{m.value},"
           end
         end
         out.puts '}'
@@ -140,9 +164,6 @@ module Xdrgen
           use serde_bytes::ByteBuf;
         RUST
         out.break
-      end
-
-      def render_bottom_matter(out)
       end
     end
   end

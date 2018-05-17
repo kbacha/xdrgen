@@ -1,5 +1,8 @@
-require "xdrgen/version"
-require "active_support/all"
+require 'dry-struct'
+require 'dry-types'
+require 'xdrgen/version'
+require 'xdrgen/types'
+require 'active_support/all'
 require 'memoist'
 
 module Xdrgen

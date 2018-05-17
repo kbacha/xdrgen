@@ -17,12 +17,14 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.required_ruby_version = '>= 2.1.0'
+  spec.required_ruby_version = '>= 2.4.0'
 
   spec.add_dependency "treetop", "~> 1.5.3"
   spec.add_dependency "activesupport", "~> 5"
   spec.add_dependency "slop", "~> 3.4"
   spec.add_dependency "memoist", "~> 0.11.0"
+  spec.add_dependency "dry-struct", "~> 0.5.0"
+  spec.add_dependency "dry-types", "~> 0.13.0"
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
